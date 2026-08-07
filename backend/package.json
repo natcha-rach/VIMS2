@@ -1,0 +1,36 @@
+{
+  "name": "vims-enterprise",
+  "version": "1.0.0-alpha",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "test": "vitest",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "tsx": "^4.23.8",
+    "vitest": "^4.1.10"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^7.5.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "prisma": "^6.19.3",
+    "zod": "^4.4.3"
+  }
+}

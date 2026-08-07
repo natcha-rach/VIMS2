@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>เข้าสู่ระบบ | ระบบร้านเสื้อมือสอง</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Kanit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- ใช้ base.css ไฟล์เดียวพอ (ไม่มี sidebar ในหน้านี้ เลยไม่ต้องมี css เฉพาะหน้า) -->
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <style>
+      /* สไตล์เฉพาะหน้า login (ไม่มี sidebar เลยจัดกลางจอเอง) */
+      body.login-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+      .login-card {
+        width: 100%;
+        max-width: 360px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-line);
+        border-radius: 14px;
+        padding: 28px;
+      }
+      .login-brand {
+        text-align: center;
+        margin-bottom: 22px;
+        font-family: var(--font-display, inherit);
+        font-size: 22px;
+      }
+      .login-error {
+        color: var(--color-loss, #c0392b);
+        font-size: 14px;
+        margin-bottom: 12px;
+        display: none;
+      }
+      .login-error.show { display: block; }
+    </style>
+  </head>
+  <!-- class "login-body" ใช้แค่จัดกลางจอ ไม่เกี่ยวกับ auth logic -->
+  <body class="login-body">
+    <div class="login-card">
+      <div class="login-brand">👕 เข้าสู่ระบบร้าน</div>
+
+      <!-- ข้อความ error จะโผล่ตรงนี้ถ้า login ไม่สำเร็จ (ควบคุมด้วย login.js) -->
+      <div id="loginError" class="login-error"></div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">อีเมล</label>
+          <input type="email" id="email" required autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="password">รหัสผ่าน</label>
+          <input type="password" id="password" required autocomplete="current-password" />
+        </div>
+        <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-block">
+          เข้าสู่ระบบ
+        </button>
+      </form>
+    </div>
+
+    <!-- หน้านี้ไม่โหลด nav.js เพราะไม่มี sidebar -->
+    <!-- apiClient.js ต้องโหลดก่อน login.js เสมอ เพราะ login.js เรียกใช้ api.auth.login() -->
+    <script src="assets/js/apiClient.js"></script>
+    <script src="assets/js/login.js"></script>
+  </body>
+</html>

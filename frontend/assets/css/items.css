@@ -1,0 +1,45 @@
+/* ==========================================================
+   ITEMS (items.html) — สินค้า/สต็อก
+   ========================================================== */
+
+.filter-select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--color-line);
+  font-family: var(--font-body);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.item-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.item-name { font-weight: 600; }
+.item-meta { font-size: 12px; color: var(--color-ink-soft); }
+
+.item-row-prices {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+}
+.item-sell-price {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--color-tan-dark);
+}
+
+/* ---------- Badge สถานะสต็อก ---------- */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-line);
+  color: var(--color-ink-soft);
+}
+.badge.in_stock { background: #E4EEE6; color: var(--color-profit); }
+.badge.sold { background: #F0E4DE; color: var(--color-loss); }

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>สินค้า/สต็อก | ระบบร้านเสื้อมือสอง</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Kanit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/items.css" />
+  </head>
+  <body>
+    <nav id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <span class="brand-mark">👕</span
+          ><span class="brand-text">Bubbles <span>Gumps</span></span>
+        </div>
+        <button
+          id="navCollapse"
+          class="nav-collapse"
+          aria-label="ย่อ/ขยายเมนู"
+          title="ย่อ/ขยายเมนู"
+        >
+          ‹
+        </button>
+      </div>
+      <div class="sidebar-links">
+        <a href="index.html" title="ภาพรวม"
+          ><span class="icon">📊</span><span class="label">ภาพรวม</span></a
+        >
+        <a href="lots.html" title="ล็อต"
+          ><span class="icon">📦</span><span class="label">ล็อต</span></a
+        >
+        <a href="items.html" title="สินค้า"
+          ><span class="icon">👕</span><span class="label">สินค้า</span></a
+        >
+        <a href="sell.html" title="ขายของ"
+          ><span class="icon">💰</span><span class="label">ขายของ</span></a
+        >
+        <a href="reports.html" title="รายงาน"
+          ><span class="icon">📅</span><span class="label">รายงาน</span></a
+        >
+        <a href="accounting.html" title="บัญชี"
+          ><span class="icon">🧾</span><span class="label">บัญชี</span></a
+        >
+      </div>
+    </nav>
+
+    <div id="mainWrap">
+      <div class="topbar">
+        <div class="subtitle">สินค้า/สต็อก</div>
+      </div>
+
+      <div class="page">
+        <h1>เพิ่มเสื้อเข้าสต็อก</h1>
+
+        <div class="tag-card">
+          <form id="itemForm">
+            <div class="field">
+              <label for="lotSelect">ล็อตที่มาจาก</label>
+              <select id="lotSelect" required></select>
+            </div>
+            <div class="field">
+              <label for="itemName">ชื่อ/รายละเอียดเสื้อ</label>
+              <input
+                type="text"
+                id="itemName"
+                placeholder="เช่น เสื้อยืดลาย Nike สีดำ"
+                required
+              />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="size">ไซซ์</label>
+                <input type="text" id="size" placeholder="M / L / XL" />
+              </div>
+              <div class="field">
+                <label for="condition">สภาพ</label>
+                <input
+                  type="text"
+                  id="condition"
+                  placeholder="ดีมาก / มีตำหนิเล็กน้อย"
+                />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="costPrice">ต้นทุน/ชิ้น (บาท)</label>
+                <input
+                  type="number"
+                  id="costPrice"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="sellPrice">ราคาตั้งขาย (บาท)</label>
+                <input
+                  type="number"
+                  id="sellPrice"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field-row">
+              <button
+                type="button"
+                class="btn btn-ghost hidden"
+                id="cancelItemEdit"
+                style="flex: 1"
+              >
+                ยกเลิกแก้ไข
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="itemSubmitBtn"
+                style="flex: 2"
+              >
+                เพิ่มเข้าสต็อก
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <h2 style="margin-top: 24px">สต็อกทั้งหมด</h2>
+        <div class="field-row" style="margin-bottom: 10px">
+          <select id="filterStatus" class="filter-select">
+            <option value="all">ทั้งหมด</option>
+            <option value="in_stock" selected>ในสต็อก</option>
+            <option value="sold">ขายแล้ว</option>
+          </select>
+        </div>
+        <div id="itemList"><div class="empty-state">กำลังโหลด...</div></div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- apiClient.js แทนที่ supabase-js CDN + supabaseClient.js เดิมทั้งคู่ -->
+    <!-- (ไม่ต้องมี CDN ของ Supabase อีกต่อไป เพราะไม่ได้คุยกับ Supabase ตรงๆ แล้ว) -->
+    <script src="assets/js/apiClient.js"></script>
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/items.js"></script>
+  </body>
+</html>

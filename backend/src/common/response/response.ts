@@ -1,0 +1,1 @@
+export const ok=(data:any)=>({success:true,data});

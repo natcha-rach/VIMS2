@@ -1,0 +1,222 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// User Role Definition
+// ==========================================
+//
+// กำหนดระดับสิทธิ์ของ User
+//
+// SUPER_ADMIN
+// - เจ้าของระบบ
+// - Full Access
+//
+// ADMIN
+// - จัดการระบบ
+//
+// MANAGER
+// - จัดการ Warehouse / Inventory
+//
+// STAFF
+// - ใช้งาน Operation
+//
+// VIEWER
+// - ดูข้อมูลอย่างเดียว
+//
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  STAFF
+  VIEWER
+}
+
+// ==========================================
+// Shop Module Enums
+// ==========================================
+
+enum ItemStatus {
+  IN_STOCK
+  SOLD
+}
+
+enum PaymentMethod {
+  CASH
+  TRANSFER
+  GOVERNMENT
+}
+
+model User {
+  // Primary Key
+  id String @id @default(uuid())
+
+  // Authentication
+
+  email String @unique
+
+  username String @unique
+
+  // Password ที่ผ่าน bcrypt hash แล้ว
+
+  passwordHash String
+
+  // Profile
+
+  firstName String?
+
+  lastName String?
+
+  // Authorization
+
+  // Role ของ User
+  //
+  // Default:
+  // STAFF
+  //
+  // เพราะ User ใหม่ไม่ควรได้สิทธิ์สูง
+
+  role Role @default(STAFF)
+
+  // Account Status
+
+  isActive Boolean @default(true)
+
+  // Audit Timestamp
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  // Relations
+
+  lots Lot[]
+}
+
+// ==========================================
+// Shop Domain Models
+// ==========================================
+//
+// Phase 2: Lots -> Items -> Sales -> Expenses -> Settings
+//
+// ความสัมพันธ์:
+//
+// Lot (1 ครั้งที่รับของเข้า เช่น 1 กระสอบ)
+//   └── Item (เสื้อแต่ละตัวที่แยกออกจากล็อต)
+//         └── Sale (การขาย 1 ครั้งต่อ 1 Item)
+//
+
+model Lot {
+  id String @id @default(uuid())
+
+  lotName String // ชื่อ/รหัสล็อต เช่น "กระสอบเหมา ก.ค. 69"
+
+  purchaseDate DateTime @default(now())
+
+  source String? // แหล่งที่มา เช่น ชื่อร้านขายส่ง
+
+  // เงินทุนที่จ่ายไปทั้งล็อต
+  totalCost Decimal @db.Decimal(10, 2)
+
+  // จำนวนชิ้นทั้งหมดในล็อต (ไว้คำนวณต้นทุนเฉลี่ย/ชิ้น)
+  totalItems Int @default(0)
+
+  note String?
+
+  // รูปกระสอบ/ล็อตตอนรับเข้า (Phase 3: อัปโหลดผ่าน /api/uploads/image)
+  imageUrl String?
+
+  // ใครเป็นคนบันทึกล็อตนี้เข้าระบบ
+  createdById String
+  createdBy   User   @relation(fields: [createdById], references: [id])
+
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([purchaseDate])
+}
+
+model Item {
+  id String @id @default(uuid())
+
+  lotId String
+  lot   Lot    @relation(fields: [lotId], references: [id])
+
+  itemName String // เช่น "เสื้อยืดลาย Nike สีดำ"
+
+  size String? // S, M, L, XL ...
+
+  condition String? // สภาพ เช่น "ดีมาก", "มีตำหนิเล็กน้อย"
+
+  costPrice Decimal @db.Decimal(10, 2) // ต้นทุนต่อชิ้น
+
+  sellPrice Decimal @db.Decimal(10, 2) // ราคาตั้งขาย
+
+  status ItemStatus @default(IN_STOCK)
+
+  imageUrl String?
+
+  sale Sale?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([lotId])
+}
+
+model Sale {
+  id String @id @default(uuid())
+
+  itemId String @unique
+  item   Item   @relation(fields: [itemId], references: [id])
+
+  saleDate DateTime @default(now())
+
+  channel String @default("ถนนคนเดิน") // ช่องทางขาย
+
+  salePrice Decimal @db.Decimal(10, 2) // ราคาที่ขายได้จริง (เผื่อต่อรอง)
+
+  // copy ต้นทุนตอนขาย ไว้กันข้อมูลเปลี่ยนย้อนหลังถ้าแก้ costPrice ของ Item ทีหลัง
+  costPrice Decimal @db.Decimal(10, 2)
+
+  paymentMethod PaymentMethod
+
+  note String?
+
+  createdAt DateTime @default(now())
+
+  @@index([saleDate])
+}
+
+model Expense {
+  id String @id @default(uuid())
+
+  expenseDate DateTime @default(now())
+
+  category String // เช่น "ค่าเช่าแผง", "ค่าเดินทาง", "บรรจุภัณฑ์"
+
+  amount Decimal @db.Decimal(10, 2)
+
+  note String?
+
+  createdAt DateTime @default(now())
+
+  @@index([expenseDate])
+}
+
+model AppSetting {
+  key String @id // เช่น "money_buckets"
+
+  value Json
+
+  updatedAt DateTime @updatedAt
+}

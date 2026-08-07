@@ -1,0 +1,36 @@
+/* ==========================================================
+   LOTS (lots.html) — จัดการล็อต
+   ใช้ style ร่วมจาก base.css เป็นหลัก (.tag-card, .field, .btn)
+   ไฟล์นี้มีแค่ style เฉพาะการ์ดแสดงรายการล็อต
+   ========================================================== */
+
+.lot-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.lot-name {
+  font-weight: 600;
+}
+
+.lot-meta {
+  font-size: 12px;
+  color: var(--color-ink-soft);
+}
+
+.lot-summary {
+  text-align: right;
+}
+.lot-summary .lot-cost {
+  font-family: var(--font-display);
+  font-size: 18px;
+}
+
+.lot-note {
+  width: 100%;
+  font-size: 13px;
+  margin-top: 8px;
+  color: var(--color-ink-soft);
+}

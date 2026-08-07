@@ -1,0 +1,25 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/vims
+
+  postgres:
+    image: postgres:16
+    container_name: vims-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: vims
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - vims_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  vims_postgres_data:
