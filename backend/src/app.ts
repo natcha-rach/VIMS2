@@ -53,6 +53,22 @@ const loginLimiter = rateLimit({
     message: "พยายาม login บ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่",
   },
 });
+
+app.get("/", (_req, res) => {
+  res.json({
+    status: "ok",
+    service: "VIMS API",
+    message: "VIMS API is running"
+  });
+});
+
+app.get("/health", (_req, res) => {
+  res.status(200).json({
+    status: "healthy"
+  });
+});
+
+
 app.use("/api/auth/login", loginLimiter);
 
 app.use("/api", router);
