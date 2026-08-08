@@ -41,7 +41,9 @@
         margin-bottom: 12px;
         display: none;
       }
-      .login-error.show { display: block; }
+      .login-error.show {
+        display: block;
+      }
     </style>
   </head>
   <!-- class "login-body" ใช้แค่จัดกลางจอ ไม่เกี่ยวกับ auth logic -->
@@ -54,14 +56,30 @@
 
       <form id="loginForm">
         <div class="field">
-          <label for="email">อีเมล</label>
-          <input type="email" id="email" required autocomplete="username" />
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            required
+            minlength="3"
+            maxlength="50"
+            autocomplete="username"
+          />
         </div>
         <div class="field">
           <label for="password">รหัสผ่าน</label>
-          <input type="password" id="password" required autocomplete="current-password" />
+          <input
+            type="password"
+            id="password"
+            required
+            autocomplete="current-password"
+          />
         </div>
-        <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-block">
+        <button
+          type="submit"
+          id="loginSubmitBtn"
+          class="btn btn-primary btn-block"
+        >
           เข้าสู่ระบบ
         </button>
       </form>

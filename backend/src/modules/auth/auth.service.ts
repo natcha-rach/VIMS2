@@ -104,7 +104,7 @@ export class AuthService {
   //
   // Flow:
   //
-  // Email
+  // Username
   //  |
   // Find User
   //  |
@@ -116,9 +116,9 @@ export class AuthService {
 
 
     const user =
-      await authRepository.findByEmail(
-        data.email
-      );
+  await authRepository.findByUsername(
+    data.username
+  );
 
 
 

@@ -17,7 +17,7 @@ if (api.auth.isLoggedIn()) {
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = document.getElementById("email").value.trim();
+  const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value;
   const errorBox = document.getElementById("loginError");
   const submitBtn = document.getElementById("loginSubmitBtn");
@@ -30,7 +30,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   submitBtn.textContent = "กำลังเข้าสู่ระบบ...";
 
   // เรียก apiClient -> POST /api/auth/login
-  const { error } = await api.auth.login(email, password);
+  const { error } = await api.auth.login(username, password);
 
   submitBtn.disabled = false;
   submitBtn.textContent = "เข้าสู่ระบบ";

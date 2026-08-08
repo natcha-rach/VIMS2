@@ -20,24 +20,26 @@ async function main() {
   const email = process.env.OWNER_EMAIL || "owner@shop.local";
   const username = process.env.OWNER_USERNAME || "owner";
   const password = process.env.OWNER_PASSWORD || "ChangeMe123!";
-
-  const existing = await prisma.user.findUnique({ where: { email } });
-
-  if (existing) {
-    console.log(`มีบัญชีนี้อยู่แล้ว (${email}) ข้ามการสร้างใหม่`);
-    return;
-  }
-
   const passwordHash = await bcrypt.hash(password, 10);
 
-  const user = await prisma.user.create({
-    data: {
-      email,
-      username,
-      passwordHash,
-      role: "ADMIN",
-    },
-  });
+const user = await prisma.user.upsert({
+  where: {
+    username,
+  },
+
+  update: {
+    email,
+    passwordHash,
+    role: "ADMIN",
+  },
+
+  create: {
+    email,
+    username,
+    passwordHash,
+    role: "ADMIN",
+  },
+});
 
   console.log("สร้างบัญชีเจ้าของร้านสำเร็จ:");
   console.log(`  email: ${user.email}`);
