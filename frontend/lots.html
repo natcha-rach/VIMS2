@@ -102,6 +102,15 @@
               <label for="note">หมายเหตุ</label>
               <textarea id="note" rows="2"></textarea>
             </div>
+            <!-- รูปกระสอบ/ล็อตตอนรับเข้า อัปโหลดขึ้น Cloudinary ทันที (เหมือนกลไกในหน้า items.html) -->
+            <div class="field">
+              <label for="lotImageFile">รูปกระสอบ/ล็อต (ถ้ามี)</label>
+              <div class="image-upload-field">
+                <img id="lotImagePreview" class="image-preview" style="display: none" />
+                <input type="file" id="lotImageFile" accept="image/*" capture="environment" />
+              </div>
+              <div class="image-upload-status" id="lotImageStatus"></div>
+            </div>
             <div class="field-row">
               <button
                 type="button"

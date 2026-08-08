@@ -10,8 +10,42 @@
 
 let editingLotId = null;
 let lotsCache = [];
+let pendingLotImageUrl = null;
 
 document.getElementById("purchaseDate").valueAsDate = new Date();
+
+// ==========================================================
+// อัปโหลดรูปกระสอบ/ล็อต (เชื่อมกับ api.uploadImage() ใน apiClient.js -> Cloudinary)
+// ==========================================================
+document.getElementById("lotImageFile").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const preview = document.getElementById("lotImagePreview");
+  const statusEl = document.getElementById("lotImageStatus");
+
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  statusEl.textContent = "กำลังอัปโหลด...";
+  pendingLotImageUrl = null;
+
+  const { url, error } = await api.uploadImage(file);
+  if (error) {
+    statusEl.textContent = "อัปโหลดไม่สำเร็จ: " + error.message;
+    return;
+  }
+  pendingLotImageUrl = url;
+  statusEl.textContent = "อัปโหลดสำเร็จ";
+});
+
+function resetLotImageField() {
+  pendingLotImageUrl = null;
+  const preview = document.getElementById("lotImagePreview");
+  preview.src = "";
+  preview.style.display = "none";
+  document.getElementById("lotImageStatus").textContent = "";
+  document.getElementById("lotImageFile").value = "";
+}
 
 document.getElementById("lotForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -25,6 +59,7 @@ document.getElementById("lotForm").addEventListener("submit", async (e) => {
     total_cost: Number(document.getElementById("totalCost").value),
     total_items: Number(document.getElementById("totalItems").value),
     note: document.getElementById("note").value.trim(),
+    image_url: pendingLotImageUrl || undefined,
   };
 
   if (editingLotId) {
@@ -50,6 +85,7 @@ document.getElementById("lotForm").addEventListener("submit", async (e) => {
     showToast("บันทึกล็อตเรียบร้อย");
     document.getElementById("lotForm").reset();
     document.getElementById("purchaseDate").valueAsDate = new Date();
+    resetLotImageField();
   }
 
   loadLots();
@@ -63,6 +99,7 @@ function exitEditMode() {
   document.getElementById("purchaseDate").valueAsDate = new Date();
   document.getElementById("lotSubmitBtn").textContent = "บันทึกล็อต";
   document.getElementById("cancelLotEdit").classList.add("hidden");
+  resetLotImageField();
 }
 
 function enterEditMode(lot) {
@@ -75,6 +112,16 @@ function enterEditMode(lot) {
   document.getElementById("note").value = lot.note || "";
   document.getElementById("lotSubmitBtn").textContent = "บันทึกการแก้ไข";
   document.getElementById("cancelLotEdit").classList.remove("hidden");
+
+  resetLotImageField();
+  if (lot.image_url) {
+    pendingLotImageUrl = lot.image_url;
+    const preview = document.getElementById("lotImagePreview");
+    preview.src = lot.image_url;
+    preview.style.display = "block";
+    document.getElementById("lotImageStatus").textContent = "ใช้รูปเดิม (เลือกไฟล์ใหม่เพื่อเปลี่ยน)";
+  }
+
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 

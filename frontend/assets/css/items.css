@@ -43,3 +43,45 @@
 }
 .badge.in_stock { background: #E4EEE6; color: var(--color-profit); }
 .badge.sold { background: #F0E4DE; color: var(--color-loss); }
+
+/* ---------- Toggle: เพิ่มทีละชิ้น / เพิ่มหลายชิ้นพร้อมกัน ---------- */
+.add-mode-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.add-mode-tab {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-ink-soft);
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+}
+.add-mode-tab.active {
+  background: var(--color-tan);
+  color: #fff;
+  border-color: var(--color-tan);
+}
+
+/* ---------- แถวเพิ่มสินค้าหลายชิ้นพร้อมกัน (bulk add) ---------- */
+.bulk-row {
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.bulk-row-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--color-loss);
+  font-size: 13px;
+  cursor: pointer;
+}

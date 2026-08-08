@@ -377,3 +377,25 @@ td.loss { color: var(--color-loss); }
 @media (min-width: 1200px) {
   .page { max-width: 1080px; }
 }
+
+/* ==========================================================
+   อัปโหลดรูปภาพ + พรีวิว (ใช้ร่วมกันทั้งหน้า lots.html และ items.html)
+   ========================================================== */
+.image-upload-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.image-preview {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--color-line);
+  background: var(--color-line);
+  flex-shrink: 0;
+}
+.image-upload-status {
+  font-size: 12px;
+  color: var(--color-ink-soft);
+}

@@ -58,7 +58,18 @@
       <div class="page">
         <h1>เพิ่มเสื้อเข้าสต็อก</h1>
 
-        <div class="tag-card">
+        <!-- ==========================================================
+             สลับโหมด: เพิ่มทีละชิ้น (ปกติ) / เพิ่มหลายชิ้นพร้อมกัน (จากล็อตเดียว)
+             เพิ่มเข้ามาใหม่ ตอบโจทย์ "ซื้อกระสอบมา 200 ตัว ทยอยแยกทีละ 2-3 ตัว"
+             เชื่อมกับ POST /api/items/bulk (มีอยู่แล้วที่ backend ตั้งแต่ Phase 3
+             แต่เพิ่งมาทำหน้าตาให้ใช้งานได้ตอนนี้)
+             ========================================================== -->
+        <div class="add-mode-tabs">
+          <button type="button" class="add-mode-tab active" data-mode="single">เพิ่มทีละชิ้น</button>
+          <button type="button" class="add-mode-tab" data-mode="bulk">เพิ่มหลายชิ้นพร้อมกัน</button>
+        </div>
+
+        <div class="tag-card" id="singleAddSection">
           <form id="itemForm">
             <div class="field">
               <label for="lotSelect">ล็อตที่มาจาก</label>
@@ -109,6 +120,18 @@
                 />
               </div>
             </div>
+
+            <!-- ฟิลด์รูปภาพ: อัปโหลดขึ้น Cloudinary ทันทีตอนเลือกไฟล์ (ดู items.js: handleImageSelect)
+                 แล้วเก็บ URL ที่ได้ไว้รอตอนกดบันทึกฟอร์ม -->
+            <div class="field">
+              <label for="itemImageFile">รูปสินค้า (ถ้ามี)</label>
+              <div class="image-upload-field">
+                <img id="itemImagePreview" class="image-preview" style="display: none" />
+                <input type="file" id="itemImageFile" accept="image/*" capture="environment" />
+              </div>
+              <div class="image-upload-status" id="itemImageStatus"></div>
+            </div>
+
             <div class="field-row">
               <button
                 type="button"
@@ -128,6 +151,27 @@
               </button>
             </div>
           </form>
+        </div>
+
+        <!-- ==========================================================
+             โหมดเพิ่มหลายชิ้นพร้อมกัน — ซ่อนไว้ก่อน (สลับด้วย add-mode-tab ด้านบน)
+             ========================================================== -->
+        <div class="tag-card hidden" id="bulkAddSection">
+          <div class="field">
+            <label for="bulkLotSelect">ล็อตที่มาจาก (ใช้ล็อตเดียวกันทุกแถว)</label>
+            <select id="bulkLotSelect" required></select>
+          </div>
+
+          <div id="bulkRows"></div>
+
+          <div class="field-row">
+            <button type="button" class="btn btn-ghost" id="addBulkRowBtn" style="flex: 1">
+              + เพิ่มอีกแถว
+            </button>
+            <button type="button" class="btn btn-primary" id="submitBulkBtn" style="flex: 2">
+              บันทึกทั้งหมด
+            </button>
+          </div>
         </div>
 
         <h2 style="margin-top: 24px">สต็อกทั้งหมด</h2>
