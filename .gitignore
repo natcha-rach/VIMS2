@@ -9,3 +9,5 @@ build/
 *.log
 
 .vscode/
+# Local Netlify folder
+.netlify

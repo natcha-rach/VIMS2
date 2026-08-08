@@ -248,45 +248,75 @@ const api = {
   // auth: login / logout
   // --------------------------------------------------------
   // เชื่อมกับ: POST /api/auth/login (src/modules/auth/auth.routes.ts)
-  auth: {
-    async login(email, password) {
-      // ไม่ผ่าน request() กลาง เพราะตอน login ยังไม่มี token จะแนบ (เป็น endpoint สาธารณะ)
-      // และ response shape ของ login (data.user, data.accessToken) ไม่ต้องแปลง case
-      // เพราะ login.js จะอ่านค่าตรงนี้เอง ไม่ผ่านหน้าอื่นที่คาดหวัง snake_case
-      try {
-        const res = await fetch(`${API_BASE_URL}/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
-        const json = await res.json().catch(() => null);
+  // --------------------------------------------------------
+// auth: login / logout
+// --------------------------------------------------------
+// เชื่อมกับ: POST /api/auth/login
+auth: {
+  async login(username, password) {
+    // Login เป็น public endpoint จึงไม่ผ่าน request() กลาง
+    try {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-        if (!res.ok || !json || json.success === false) {
-          return { error: { message: (json && json.message) || "เข้าสู่ระบบไม่สำเร็จ" } };
-        }
+      const json = await res.json().catch(() => null);
 
-        // auth.service.ts (backend) คืนค่า { user, accessToken } ไว้ใน data
-        const token = json.data && json.data.accessToken;
-        if (!token) {
-          return { error: { message: "ไม่พบ token ในคำตอบจากเซิร์ฟเวอร์" } };
-        }
-
-        setToken(token); // เก็บ token ไว้ใช้ในทุก request ถัดไป
-        return { error: null };
-      } catch (err) {
-        return { error: { message: "เชื่อมต่อ backend ไม่ได้ ตรวจสอบว่าเซิร์ฟเวอร์เปิดอยู่หรือไม่" } };
+      if (!res.ok || !json || json.success === false) {
+        return {
+          error: {
+            message:
+              (json && json.message) ||
+              "เข้าสู่ระบบไม่สำเร็จ",
+          },
+        };
       }
-    },
 
-    logout() {
-      clearToken();
-      location.href = "login.html";
-    },
+      // auth.service.ts คืนค่า:
+      // { user, accessToken } ใน data
+      const token =
+        json.data && json.data.accessToken;
 
-    isLoggedIn() {
-      return !!getToken();
-    },
+      if (!token) {
+        return {
+          error: {
+            message:
+              "ไม่พบ token ในคำตอบจากเซิร์ฟเวอร์",
+          },
+        };
+      }
+
+      setToken(token);
+
+      return {
+        error: null,
+      };
+    } catch (err) {
+      return {
+        error: {
+          message:
+            "เชื่อมต่อ backend ไม่ได้ ตรวจสอบว่าเซิร์ฟเวอร์เปิดอยู่หรือไม่",
+        },
+      };
+    }
   },
+
+  logout() {
+    clearToken();
+    location.href = "login.html";
+  },
+
+  isLoggedIn() {
+    return !!getToken();
+  },
+},
 
 
   // --------------------------------------------------------
