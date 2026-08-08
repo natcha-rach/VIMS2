@@ -49,8 +49,8 @@ const API_BASE_URL = "http://localhost:3000/api";
 //   - Cloudinary จัดการบีบอัด/ย่อขนาดรูปให้อัตโนมัติอยู่แล้ว
 //   - "unsigned upload preset" ถูกออกแบบมาให้ปลอดภัยสำหรับใช้ฝั่ง client โดยเฉพาะ
 //     (จำกัดได้ว่าอัปโหลดได้แค่ folder ไหน ขนาดเท่าไหร่ ผ่านการตั้งค่าใน preset)
-const CLOUDINARY_CLOUD_NAME = "YOUR_CLOUD_NAME"; // TODO: แก้เป็น Cloud name จริงของคุณ
-const CLOUDINARY_UPLOAD_PRESET = "YOUR_UPLOAD_PRESET"; // TODO: แก้เป็นชื่อ unsigned preset จริงของคุณ
+const CLOUDINARY_CLOUD_NAME = "ap7jso9z"; // TODO: แก้เป็น Cloud name จริงของคุณ
+const CLOUDINARY_UPLOAD_PRESET = "project-vims2"; // TODO: แก้เป็นชื่อ unsigned preset จริงของคุณ
 
 // key ที่ใช้เก็บ JWT token ใน localStorage ของเบราว์เซอร์
 // (เก็บไว้ที่เครื่องผู้ใช้ ฝั่งเราไม่ต้องเก็บ session ใดๆ เพิ่ม)
