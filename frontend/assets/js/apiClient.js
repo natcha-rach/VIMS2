@@ -28,7 +28,7 @@
 
 // URL ของ backend API — ตอน dev รันที่เครื่องตัวเอง (npm run dev ที่โปรเจกต์ VIMS)
 // เปลี่ยนเป็นโดเมนจริงตอน deploy production (เช่น https://api.myshirtshop.com/api)
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = "https://vims2-api.onrender.com";
 
 // ==========================================================
 // ตั้งค่า Cloudinary (สำหรับอัปโหลดรูปภาพ)
